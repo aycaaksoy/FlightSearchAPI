@@ -5,6 +5,7 @@ import com.example.flightsearchapi.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -37,5 +38,16 @@ public class FlightController {
     @DeleteMapping("/{id}")
     public void deleteFlight(@PathVariable Long id) {
         flightService.deleteFlight(id);
+    }
+
+    @GetMapping
+    public List<Flight> searchFlights(
+            @RequestParam String departure,
+            @RequestParam String destination,
+            @RequestParam LocalDateTime departureTime,
+            @RequestParam(required = false) LocalDateTime returnTime) {
+
+        // Call the flight service to perform the search
+        return flightService.searchFlights(departure, destination, departureTime, returnTime);
     }
 }
