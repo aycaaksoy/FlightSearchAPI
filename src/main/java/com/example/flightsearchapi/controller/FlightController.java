@@ -40,14 +40,5 @@ public class FlightController {
         flightService.deleteFlight(id);
     }
 
-    @GetMapping
-    public List<Flight> searchFlights(
-            @RequestParam String departure,
-            @RequestParam String destination,
-            @RequestParam LocalDateTime departureTime,
-            @RequestParam(required = false) LocalDateTime returnTime) {
 
-        // Call the flight service to perform the search
-        return flightService.searchFlights(departure, destination, departureTime, returnTime);
-    }
 }
