@@ -1,14 +1,15 @@
 package com.example.flightsearchapi.controller;
 
 import com.example.flightsearchapi.dto.FlightDTO;
+import com.example.flightsearchapi.dto.SearchRequestDTO;
 import com.example.flightsearchapi.model.Flight;
 import com.example.flightsearchapi.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,11 @@ public class FlightController {
 
     @PostMapping
     public Flight saveFlight(@RequestBody Flight flight) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        flight.setDepartureTime(LocalDateTime.parse(flight.getDepartureTime().format(formatter), formatter));
+        flight.setReturnTime(LocalDateTime.parse(flight.getReturnTime().format(formatter), formatter));
+
         return flightService.saveFlight(flight);
     }
 
@@ -43,14 +49,16 @@ public class FlightController {
         flightService.deleteFlight(id);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<FlightDTO>> searchFlights(
-            @RequestParam String departureAirport,
-            @RequestParam String arrivalAirport,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime returnTime) {
+    @PostMapping("/search")
+    public ResponseEntity<List<FlightDTO>> searchFlights(@RequestBody SearchRequestDTO searchRequestDto) {
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        List<FlightDTO> flights = flightService.searchFlights(departureAirport, arrivalAirport, departureTime, returnTime);
+        List<FlightDTO> flights = flightService.searchFlights(
+                searchRequestDto.getDepartureAirport(),
+                searchRequestDto.getArrivalAirport(),
+                searchRequestDto.getDepartureTime(),
+                searchRequestDto.getReturnTime()
+        );
 
         return ResponseEntity.ok(flights);
     }

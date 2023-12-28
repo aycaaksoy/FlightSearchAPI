@@ -1,26 +1,18 @@
 package com.example.flightsearchapi.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class FlightDTO {
-    public FlightDTO(Long id, String departureAirport, String arrivalAirport, LocalDateTime departureTime, LocalDateTime returnTime) {
-        this.id = id;
+public class SearchRequestDTO {
+
+    public SearchRequestDTO() {
+    }
+
+    public SearchRequestDTO(String departureAirport, String arrivalAirport, LocalDateTime departureTime, LocalDateTime returnTime) {
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.departureTime = departureTime;
         this.returnTime = returnTime;
-    }
-
-    public FlightDTO() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getDepartureAirport() {
@@ -55,10 +47,22 @@ public class FlightDTO {
         this.returnTime = returnTime;
     }
 
-    private Long id;
     private String departureAirport;
     private String arrivalAirport;
     private LocalDateTime departureTime;
     private LocalDateTime returnTime;
+
+    private String formatLocalDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter);
+    }
+    @Override
+    public String toString() {
+        return "SearchRequest{" +
+                "arrivalAirport='" + arrivalAirport + '\'' +
+                ", departureTime=" + departureTime +
+                ", returnTime=" + returnTime +
+                '}';
+    }
 
 }
