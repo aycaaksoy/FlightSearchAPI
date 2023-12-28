@@ -1,8 +1,11 @@
 package com.example.flightsearchapi.controller;
 
+import com.example.flightsearchapi.dto.FlightDTO;
 import com.example.flightsearchapi.model.Flight;
 import com.example.flightsearchapi.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -40,5 +43,16 @@ public class FlightController {
         flightService.deleteFlight(id);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<FlightDTO>> searchFlights(
+            @RequestParam String departureAirport,
+            @RequestParam String arrivalAirport,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime returnTime) {
+
+        List<FlightDTO> flights = flightService.searchFlights(departureAirport, arrivalAirport, departureTime, returnTime);
+
+        return ResponseEntity.ok(flights);
+    }
 
 }

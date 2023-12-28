@@ -1,15 +1,19 @@
-package com.example.flightsearchapi.model;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.example.flightsearchapi.dto;
 
 import java.time.LocalDateTime;
 
-@Entity
-public class Flight {
+public class FlightDTO {
+    public FlightDTO(Long id, String departureAirport, String arrivalAirport, LocalDateTime departureTime, LocalDateTime returnTime) {
+        this.id = id;
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.departureTime = departureTime;
+        this.returnTime = returnTime;
+    }
 
+    public FlightDTO() {
+
+    }
 
     public Long getId() {
         return id;
@@ -51,33 +55,11 @@ public class Flight {
         this.returnTime = returnTime;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-    public Flight() {
-
-    }
-    public Flight(Long id, String departureAirport, String arrivalAirport, LocalDateTime departureTime, LocalDateTime returnTime, double price) {
-        this.id = id;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.departureTime = departureTime;
-        this.returnTime = returnTime;
-        this.price = price;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
     private String departureAirport;
     private String arrivalAirport;
     private LocalDateTime departureTime;
     private LocalDateTime returnTime;
-    private double price;
 
+    // Constructors, getters, and setters
 }
